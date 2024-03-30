@@ -2,7 +2,7 @@
 
 <p>
     <a href="https://pepy.tech/project/auto1111sdk">
-        <img alt="GitHub release" src="https://static.pepy.tech/badge/auto1111sdk/month">
+        <img alt="GitHub release" src="https://static.pepy.tech/badge/auto1111sdk">
     </a>
     
 </p>
@@ -26,7 +26,7 @@ We recommend installing Auto 1111 SDK in a virtual environment from PyPI. Right 
 pip3 install auto1111sdk
 ```
 
-To install the latest version of Auto 1111 SDK, run:
+To install the latest version of Auto 1111 SDK (with controlnet now included), run:
 
 ```bash
 pip3 install git+https://github.com/saketh12/Auto1111SDK.git
@@ -40,6 +40,25 @@ Generating images with Auto 1111 SDK is super easy. To run inference for Text-to
 from auto1111sdk import StableDiffusionPipeline
 
 pipe = StableDiffusionPipeline("<Path to your local safetensors or checkpoint file>")
+
+prompt = "a picture of a brown dog"
+output = pipe.generate_txt2img(prompt = prompt, height = 1024, width = 768, steps = 10)
+
+output[0].save("image.png")
+```
+
+## Controlnet
+
+Right now, Controlnet only works with fp32. We are adding support for fp16 very soon.
+
+```python
+from auto1111sdk import StableDiffusionPipeline
+from auto1111sdk import ControlNetModel
+
+model = ControlNetModel(model="<THE CONTROLNET MODEL FILE NAME (WITHOUT EXTENSION)>", 
+                   image="<PATH TO IMAGE>")
+
+pipe = StableDiffusionPipeline("<Path to your local safetensors or checkpoint file>", controlnet=model)
 
 prompt = "a picture of a brown dog"
 output = pipe.generate_txt2img(prompt = prompt, height = 1024, width = 768, steps = 10)
